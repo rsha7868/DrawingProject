@@ -34,7 +34,16 @@ public class DrawingCanvas
 	public DrawingCanvas(DrawingController app)
 	{
 		super();
+		this.app = app;
+		triangleList = new ArrayList<Polgon>();
+		polygonList = new ArrayList<Polgon>();
+		ellipseList = new ArrayList<Ellipse>();
+		rectangleList = new ArrayList<Rectangle>();
 		
+		canvasImage = new BufferedImage(600, 600, BufferedImage.TYPE_INT_ARGB);
+		this.setMinimumSize(new Dimension(600, 600));
+		this.setPerferredSize(new Dimension(600, 600));
+		this.setMaxinumSize(getPerferredSize());
 	}
 	
 }
