@@ -45,5 +45,54 @@ public class DrawingCanvas
 		this.setPerferredSize(new Dimension(600, 600));
 		this.setMaxinumSize(getPerferredSize());
 	}
+	private BufferedImage canvasImage;
+	{
+		
+	}
+	
+	public ShapeCanvas(DrawingController app)
+	{
+		
+	}
+	public void addShape(Shape current)
+	{
+		if(current instanceof Polygon)
+		{
+			if(((Polygon)current).xpoints.length == 3)
+			{
+				triangleLsit.add((Polygon)current);
+			}
+		}
+		else
+		{
+			polygonList.add((Polygon)current)
+		}
+	}
+	public void clear()
+	{
+		
+	}
+	public void changeBackground()
+	{
+		
+	}
+	public void save()
+	{
+		
+	}
+	private Color randomColor()
+	{
+		
+	}
+	private void updateImage()
+	{
+		
+	}
+	@Override
+	protected void pointComponent(Graphics graphics)
+	{
+		super.pointComponent(graphics);
+		graphics.drawImage(canvasImage, 0, 0, null);
+	}
 	
 }
