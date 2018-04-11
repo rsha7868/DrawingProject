@@ -60,12 +60,12 @@ public class DrawingCanvas
 		{
 			if(((Polygon)current).xpoints.length == 3)
 			{
-				triangleLsit.add((Polygon)current);
+				triangleList.add((Polygon)current);
 			}
 		}
 		else
 		{
-			polygonList.add((Polygon)current)
+			polygonList.add((Polygon)current);
 		}
 	}
 	public void clear()
