@@ -29,13 +29,13 @@ public class ArtPanel extends JPanel
 	private SpringLayout appLayout;
 	private DrawingCanvas canvas;
 	private JPanel buttonPanel;
-	private JPanel slidePanel;
+	private JPanel sliderPanel;
 	private JSlider scaleSlider;
 	private JSlider edgeSlider;
 	private JButton triangleButton;
 	private JButton rectangleButton;
 	private JButton polygonButton;
-	private JButton elliseButton;
+	private JButton ellipseButton;
 	private JButton clearButton;
 	private JButton saveButton;
 	private JButton colorButton;
@@ -51,7 +51,9 @@ public class ArtPanel extends JPanel
 		
 		currentScale = MINIMUM_SCALE;
 		currentEdgeCount = MINIMUM_EDGE;
-		scaleSlider = new JSlider(MINIMUM_SCALE, MAXINUM_SCALE);
+		scaleSlider = new JSlider(MINIMUM_SCALE, MAXIMUM_SCALE);
+		edgeSlider = new JSlider(MINIMUM_EDGE, MAXIMUM_EDGE);
+		
 		
 		canvas = new DrawingCanvas(app);
 		sliderPanel = new JPanel();
@@ -73,28 +75,35 @@ public class ArtPanel extends JPanel
 	}
 	private void setupSliders()
 	{
-		HashTable<Integer, JLable> scaleLabels = new HashTable<Integer, JLable>();
-		HashTable<Integer, JLable> edgeLabels = new HashTable<Integer, JLable>();
+		Hashtable<Integer, JLabel> scaleLabels = new Hashtable<Integer, JLabel>();
+		Hashtable<Integer, JLabel> edgeLabels = new Hashtable<Integer, JLabel>();
 		
-		scaleLabels.put(MINIMUM_SCALE, new JLable("<HTML>Small<BR>Shape</HTML>"));
-		scaleLabels.put(MAXIMUM_SCALE + MINIMUM_SCALE)/ 2, new JLabel("\"<HTML>Medium<BR>Shape</HTML>\""));
-		scaleLabels.put(MINIMUM_SCALE, new JLable("<HTML>Large<BR>Shape</HTML>"));
+		scaleLabels.put(MINIMUM_SCALE, new JLabel("<HTML>Small<BR>Shape</HTML>"));
+		scaleLabels.put((MAXIMUM_SCALE + MINIMUM_SCALE) / 2, new JLabel("\"<HTML>Medium<BR>Shape</HTML>\""));
+		scaleLabels.put(MINIMUM_SCALE, new JLabel("<HTML>Large<BR>Shape</HTML>"));
 		
-		edgeLabels.put(MiNINUM_EDGE, new JLabel("Edges: " + MINIMUM_EDGE));
-		edgeLabels.put(MAXINUM_EDGE, new JLabel("Edges: " + MAXIMUM_EDGE));
+		edgeLabels.put(MINIMUM_EDGE, new JLabel("Edges: " + MINIMUM_EDGE));
+		edgeLabels.put(MAXIMUM_EDGE, new JLabel("Edges: " + MAXIMUM_EDGE));
 		
-		scaleSLider.setLabelTable(scaleLable);
-		scaleSLider.setOrientation(JSlider.VERTICAL);
-		scaleSLider.setSnapTTicks(true);
-		scaleSLider.setMajarTickSpacing(3);
-		scaleSLider.setMinorTickSpacing(1);
-		scaleSLider.setPaintTicks(true);
-		scaleSLider.setPaintLabels(true);
+		scaleSlider.setLabelTable(scaleLabels);
+		scaleSlider.setOrientation(JSlider.VERTICAL);
+		scaleSlider.setSnapToTicks(true);
+		scaleSlider.setMajorTickSpacing(10);
+		scaleSlider.setPaintTicks(true);
+		scaleSlider.setPaintLabels(true);
+		
+		edgeSlider.setLabelTable(edgeLabels);
+		edgeSlider.setOrientation(JSlider.VERTICAL);
+		edgeSlider.setSnapToTicks(true);
+		edgeSlider.setMajorTickSpacing(3);
+		edgeSlider.setMinorTickSpacing(1);
+		edgeSlider.setPaintTicks(true);
+		edgeSlider.setPaintLabels(true);
 	}
 	private void setupPanel()
 	{
 		this.setLayout(appLayout);
-		this.setBackground(Color.DARK_GREY);
+		this.setBackground(Color.DARK_GRAY);
 		this.setPerferredSize(new Dimension(1020, 768));
 		this.add(canvas);
 		
@@ -114,6 +123,15 @@ public class ArtPanel extends JPanel
 		this.add(buttonPanel);
 		this.add(sliderPanel);
 	}
+	private void setupLayout()
+	{
+		appLayout.putConstraint(SpringLayout.NORTH, canvas, 50, SpringLayout.NORTH, this);
+		appLayout.putConstraint(SpringLayout.WEST, canvas, 50, SpringLayout.WEST, this);
+		appLayout.putConstraint(SpringLayout.WEST, buttonPanel, 40, SpringLayout.EAST, canvas);
+		appLayout.putConstraint(SpringLayout.WEST, sliderPanel, 20, SpringLayout.EAST, buttonPanel);
+		appLayout.putConstraint(SpringLayout.NORTH, sliderPanel, 0, SpringLayout.NORTH, buttonPanel);
+		appLayout.putConstraint(SpringLayout.NORTH, buttonPanel, 0, SpringLayout.NORTH, canvas);
+	}
 	private boolean coinFlip()
 	{
 		return (int) (Math.random() * 2) == 0;
@@ -122,13 +140,13 @@ public class ArtPanel extends JPanel
 	{
 		Polygon currentShape = new Polygon();
 		
-		int originX = (int) (math.random() * 600);
-		int originY = (int) (math.random() * 600);
+		int originX = (int) (Math.random() * 600);
+		int originY = (int) (Math.random() * 600);
 		
 		for(int index = 0; index < sides; index++)
 		{
 			int minus = coinFlip() ? -1 : 1;
-			int shiftX = (int) (math.random() * currentScale) * minus;
+			int shiftX = (int) (Math.random() * currentScale) * minus;
 			minus = coinFlip() ? -1 : 1;
 			int shift = (int) (Math.random() * currentScale) * minus;
 			currentShape.addPoint(orginX + shiftX, orginX + shiftY)0;
@@ -141,40 +159,40 @@ public class ArtPanel extends JPanel
 		Rectangle currentRectangle;
 		
 		int cornerX = (int) (Math.random() * 600);
-		int cornerY = (int) (Math.Random() * 600);
+		int cornerY = (int) (Math.random() * 600);
 		int width = (int)(Math.random() * currentScale) + 1;
 		if(coinFlip())
 		{
-			currentRectangle = new Rectangle(cornerX, cornerY, width, height);
+			currentRectangle = new Rectangle(cornerX, cornerY, width, width);
 		}
 		else
 		{
 			int height  = (int)(Math.random() * currentScale) + 1;
-			currentRectangle = new Rectangle(cornerX, CornerY, width,height);
+			currentRectangle = new Rectangle(cornerX, cornerY, width,height);
 		}
-		return Current Rectangle;
+		return currentRectangle;
 	}
 	private Ellipse2D createEllipse2D()
 	{
 	Ellipse2D ellipse = new Ellipse2D.Double();
 	
 	int cornerX = (int) (Math.random() * 600);
-	int cornerY = (int) (Math.Random() * 600);
+	int cornerY = (int) (Math.random() * 600);
 	double width = (int)(Math.random() * currentScale) + 1;
 	if(coinFlip())
 	{
-		ellipse.setFrame(cornerX, cornerY, width, height);
+		ellipse.setFrame(cornerX, cornerY, width,width);
 	}
 	else
 	{
 		double height  = (int)(Math.random() * currentScale) + 1;
-		ellipse.setFrame(cornerX, CornerY, width,height);
+		ellipse.setFrame(cornerX, cornerY, width,height);
 	}
 	return ellipse;
 	}
 	private void setupListeners()
 	{
-		retangleButton.addActionListener(new ActionListener()
+		rectangleButton.addActionListener(new ActionListener()
 				{
 					public void actionPreformed(ActionEvent click)
 					{
