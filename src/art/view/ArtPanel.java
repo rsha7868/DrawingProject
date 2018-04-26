@@ -104,7 +104,7 @@ public class ArtPanel extends JPanel
 	{
 		this.setLayout(appLayout);
 		this.setBackground(Color.DARK_GRAY);
-		this.setPerferredSize(new Dimension(1020, 768));
+		this.setPreferredSize(new Dimension(1020, 768));
 		this.add(canvas);
 		
 		buttonPanel.setPreferredSize(new Dimension(200, 450));
@@ -265,6 +265,7 @@ public class ArtPanel extends JPanel
 			});
 			
 	}
+	
 	
 	
 	

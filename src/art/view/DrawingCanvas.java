@@ -42,8 +42,8 @@ public class DrawingCanvas
 		
 		canvasImage = new BufferedImage(600, 600, BufferedImage.TYPE_INT_ARGB);
 		this.setMinimumSize(new Dimension(600, 600));
-		this.setPerferredSize(new Dimension(600, 600));
-		this.setMaxinumSize(getPerferredSize());
+		this.setPreferredSize(new Dimension(600, 600));
+		this.setMaxinumSize(getPreferredSize());
 	}
 	private BufferedImage canvasImage;
 	{
@@ -78,15 +78,7 @@ public class DrawingCanvas
 	}
 	public void save()
 	{
-		
-	}
-	private Color randomColor()
-	{
-		
-	}
-	private void updateImage()
-	{
-		
+	
 	}
 	@Override
 	protected void pointComponent(Graphics graphics)
