@@ -1,10 +1,10 @@
 package art.view;
 import javax.swing.JFrame;
-import art.controller.DrawingController;
+import art.controller.ShapeController;
 public class ArtFrame extends JFrame
 {
 	private ArtPanel appPanel;
-	public ArtFrame(DrawingController app)
+	public ArtFrame(ShapeController app)
 	{
 	super();
 	appPanel = new ArtPanel(app);

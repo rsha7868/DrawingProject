@@ -9,12 +9,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
 import java.util.Hashtable;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import art.controller.DrawingController;
+import art.controller.ShapeController;
 
 
 public class ArtPanel extends JPanel
@@ -24,10 +27,10 @@ public class ArtPanel extends JPanel
 	private final int MINIMUM_SCALE = 20;
 	private final int MAXIMUM_SCALE = 100;
 	
-	private DrawingController app;
+	private ShapeController app;
 	
 	private SpringLayout appLayout;
-	private DrawingCanvas canvas;
+	private ShapeCanvas canvas;
 	private JPanel buttonPanel;
 	private JPanel sliderPanel;
 	private JSlider scaleSlider;
@@ -43,7 +46,7 @@ public class ArtPanel extends JPanel
 	private int currentEdgeCount;
 	private int currentScale;
 	
-	public ArtPanel(DrawingController app)
+	public ArtPanel(ShapeController app)
 	{
 		super();
 		this.app = app;
@@ -55,7 +58,7 @@ public class ArtPanel extends JPanel
 		edgeSlider = new JSlider(MINIMUM_EDGE, MAXIMUM_EDGE);
 		
 		
-		canvas = new DrawingCanvas(app);
+		canvas = new ShapeCanvas(app);
 		sliderPanel = new JPanel();
 		buttonPanel = new JPanel(new GridLayout(0,1));
 		
@@ -148,8 +151,8 @@ public class ArtPanel extends JPanel
 			int minus = coinFlip() ? -1 : 1;
 			int shiftX = (int) (Math.random() * currentScale) * minus;
 			minus = coinFlip() ? -1 : 1;
-			int shift = (int) (Math.random() * currentScale) * minus;
-			currentShape.addPoint(orginX + shiftX, orginX + shiftY)0;
+			int shiftY = (int) (Math.random() * currentScale) * minus;
+			currentShape.addPoint(originX + shiftX, originY + shiftY);
 		}
 		return currentShape;
 		
@@ -172,7 +175,7 @@ public class ArtPanel extends JPanel
 		}
 		return currentRectangle;
 	}
-	private Ellipse2D createEllipse2D()
+	private Ellipse2D createEllipse()
 	{
 	Ellipse2D ellipse = new Ellipse2D.Double();
 	
@@ -194,44 +197,37 @@ public class ArtPanel extends JPanel
 	{
 		rectangleButton.addActionListener(new ActionListener()
 				{
-					public void actionPreformed(ActionEvent click)
+					public void actionPerformed(ActionEvent click)
 					{
-						Rectangle rectangle = creatingRectangle();
+						Rectangle rectangle = createRectangle();
 						canvas.addShape(rectangle);
 					}	
 				});
 			triangleButton.addActionListener(new ActionListener()
 					{
-						public void actionPreformed(ActionEvent click)
+						public void actionPerformed(ActionEvent click)
 						{
-							Polygon triangle = creatingPolyon(3);
-							canvas.addShape(polygon);
+							Polygon triangle = createPolygon(3);
+							canvas.addShape(triangle);
 						}	
 					});
 			polygonButton.addActionListener(new ActionListener()
 			{
-				public void actionPreformed(ActionEvent click)
+				public void actionPerformed(ActionEvent click)
 				{
-					Polygon triangle = creatingPolyon(currentEdgeCount);
+					Polygon polygon = createPolygon(currentEdgeCount);
 					canvas.addShape(polygon);
 				}	
 			});
-			retangleButton.addActionListener(new ActionListener()
+			ellipseButton.addActionListener(new ActionListener()
 			{
-				public void actionPreformed(ActionEvent click)
+				public void actionPerformed(ActionEvent click)
 				{
-					Rectangle rectangle = creatingRectangle();
-					canvas.addShape(rectangle);
+					Ellipse2D ellipse = createEllipse();
+					canvas.addShape(ellipse);
 				}	
 			});
-			retangleButton.addActionListener(new ActionListener()
-			{
-				public void actionPreformed(ActionEvent click)
-				{
-					Rectangle rectangle = creatingRectangle();
-					canvas.addShape(rectangle);
-				}	
-			});
+			
 
 			clearButton.addActionListener(click -> canvas.clear());
 			
@@ -241,7 +237,7 @@ public class ArtPanel extends JPanel
 			
 			scaleSlider.addChangeListener(new ChangeListener()
 					{
-						@orverride
+						@Override
 						public void stateChanged(ChangeEvent e)
 						{
 							if(!scaleSlider.getValueIsAdjusting())
@@ -253,8 +249,8 @@ public class ArtPanel extends JPanel
 			edgeSlider.addChangeListener(new ChangeListener()
 			
 			{
-				@override
-				public void stateChanged(changeEvent e)
+				@Override
+				public void stateChanged(ChangeEvent e)
 				{
 					if(!edgeSlider.getValueIsAdjusting())
 					{
@@ -263,6 +259,47 @@ public class ArtPanel extends JPanel
 				}
 				
 			});
+			canvas.addMouseMotionListener(new MouseMotionListener()
+					{
+						public void mouseDragged(MouseEvent drag)
+						{
+							int X = drag.getX();
+							int y = drag.getY();
+							canvas.drawOnCanvas(x, y, currentEdgeCount);
+						}
+						@Override
+						public void mouseMoved(MouseEvent move)
+						{
+							
+						}
+					});
+			canvas.addMouseListener(new MouseListener()
+					{
+						@Override
+						public void mouseClicked(MouseEvent e)
+						{}
+				
+						@Override
+						public void mousePressed(MouseEvent e)
+						{}
+				
+						@Override
+						public void mouseReleased(MouseEvent e)
+						{
+							canvas.resetPoint();
+						}
+				
+						@Override
+						public void mouseEntered(MouseEvent e)
+						{}
+				
+						@Override
+						public void mouseExited(MouseEvent e)
+						{
+							canvas.resetPoint();
+						}
+				
+					});
 			
 	}
 	
